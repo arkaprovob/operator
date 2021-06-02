@@ -21,6 +21,9 @@ public class EventSourcingEngine {
     private boolean toggleEnabled;
 
     public EventSourcingEngine(Vertx vertx, @ConfigProperty(name = "event.sourcing.enabled") Optional<Boolean> isEnabled) {
+        LOG.info("\n");
+        LOG.info("SINGLETON SCOPED BEAN ******************************************** INITIALIZED ******************************************** INSTANCE ID {}",UUID.randomUUID().toString());
+        LOG.info("\n");
         this.vertx = vertx;
         setToggleEnabled(isEnabled.orElse(true));
     }

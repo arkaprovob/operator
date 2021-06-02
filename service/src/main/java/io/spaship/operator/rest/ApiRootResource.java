@@ -1,6 +1,7 @@
 package io.spaship.operator.rest;
 
 import io.spaship.operator.event.EventSourcingEngine;
+import io.spaship.operator.event.EventSourcingEngine2;
 import io.spaship.operator.rest.website.WebsiteResource;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -21,10 +22,12 @@ public class ApiRootResource {
 
     private final String rootPath;
     private final EventSourcingEngine eventSourcingEngine;
+    private final EventSourcingEngine2 eventSourcingEngine2;
 
-    public ApiRootResource(EventSourcingEngine eventSourcingEngine, @ConfigProperty(name = "quarkus.http.root-path")
+    public ApiRootResource(EventSourcingEngine2 eventSourcingEngine2,EventSourcingEngine eventSourcingEngine, @ConfigProperty(name = "quarkus.http.root-path")
             String property) {
         this.eventSourcingEngine = eventSourcingEngine;
+        this.eventSourcingEngine2 = eventSourcingEngine2;
         this.rootPath = property;
     }
 
@@ -39,6 +42,7 @@ public class ApiRootResource {
                     "{website}/{env}/component/{name}\"]")
     )
     public List<String> apis() {
+        eventSourcingEngine2.doesNothing();
         eventSourcingEngine.publishMessage("invoked /api endpoint");
         List<String> apis = WebHookResource.apis(rootPath);
         apis.addAll(WebsiteResource.apis(rootPath));
